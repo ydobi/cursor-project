@@ -130,7 +130,7 @@ const MemoryGame = () => {
           {showSuccessImage && (
             <div className="relative w-full h-64">
               <Image
-                src="/sweet-photo.jpg"
+                src="/sweet-photo.png"
                 alt="完成游戏奖励照片"
                 fill
                 className="object-cover rounded-lg"
