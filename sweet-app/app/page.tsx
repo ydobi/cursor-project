@@ -9,7 +9,7 @@ const HomePage = () => {
   return (
     <div className="min-h-screen bg-pink-50 p-8">
       <div className="max-w-md mx-auto space-y-8">
-        <h1 className="text-3xl font-bold text-pink-600 text-center">专属甜心小助手</h1>
+        <h1 className="text-3xl font-bold text-pink-600 text-center">泽宝专属甜心小助手</h1>
 
         {/* 甜言蜜语生成器 */}
         <MessageGenerator />
