@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
+import Image from 'next/image'
 
 type Card = {
   id: number
@@ -18,6 +19,7 @@ const MemoryGame = () => {
   const [flippedCards, setFlippedCards] = useState<number[]>([])
   const [matches, setMatches] = useState<number>(0)
   const [moves, setMoves] = useState<number>(0)
+  const [showSuccessImage, setShowSuccessImage] = useState(false)
 
   const initializeGame = () => {
     const gameCards = [...emojis, ...emojis]
@@ -32,6 +34,7 @@ const MemoryGame = () => {
     setFlippedCards([])
     setMatches(0)
     setMoves(0)
+    setShowSuccessImage(false)
   }
 
   useEffect(() => {
@@ -59,7 +62,13 @@ const MemoryGame = () => {
         newCards[secondCard].isMatched = true
         setCards(newCards)
         setFlippedCards([])
-        setMatches(prev => prev + 1)
+        const newMatches = matches + 1
+        setMatches(newMatches)
+
+        // 当所有配对都完成时，显示图片
+        if (newMatches === 8) {
+          setShowSuccessImage(true)
+        }
       } else {
         // 匹配失败，1秒后翻回
         setTimeout(() => {
@@ -112,9 +121,22 @@ const MemoryGame = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mt-4 text-center text-green-600 font-semibold"
+          className="mt-4 space-y-4"
         >
-          🎉 恭喜完成！用了 {moves} 步
+          <p className="text-center text-green-600 font-semibold">
+            🎉 恭喜完成！用了 {moves} 步
+          </p>
+
+          {showSuccessImage && (
+            <div className="relative w-full h-64">
+              <Image
+                src="/sweet-photo.jpg"
+                alt="完成游戏奖励照片"
+                fill
+                className="object-cover rounded-lg"
+              />
+            </div>
+          )}
         </motion.div>
       )}
     </div>

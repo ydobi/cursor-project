@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { moonshotAPI } from '@/lib/moonshot'
+import Image from 'next/image'
 
 type SweetMessage = {
   id: number
@@ -36,6 +37,7 @@ const fetchAIMessage = async (): Promise<string> => {
 const MessageGenerator = () => {
   const [currentMessage, setCurrentMessage] = useState<string>(defaultMessages[0].text)
   const [isLoading, setIsLoading] = useState(false)
+  const [showImage, setShowImage] = useState(false)
 
   /**
    * 处理生成新消息的点击事件
@@ -45,6 +47,7 @@ const MessageGenerator = () => {
     try {
       const newMessage = await fetchAIMessage()
       setCurrentMessage(newMessage)
+      setShowImage(Math.random() < 0.2)
     } catch (error) {
       console.error('生成消息失败:', error)
       // 发生错误时使用默认消息
@@ -60,6 +63,18 @@ const MessageGenerator = () => {
       <p className="text-gray-700 text-center mb-4 min-h-[24px]">
         {currentMessage}
       </p>
+
+      {showImage && (
+        <div className="mb-4 relative w-full h-64">
+          <Image
+            src="/sweet-photo.jpg"
+            alt="一张特别的照片"
+            fill
+            className="object-cover rounded-lg"
+          />
+        </div>
+      )}
+
       <button
         onClick={handleGenerateMessage}
         disabled={isLoading}
