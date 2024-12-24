@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { moonshotAPI } from '@/lib/moonshot'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useTheme } from '../contexts/ThemeContext'
 
 // 设置名字变量
 const BOT_NAME = "凯甲小宝"
@@ -27,6 +28,7 @@ const comfortMessages = [
 ]
 
 const JokeGenerator = () => {
+  const { theme } = useTheme()
   const [currentMessage, setCurrentMessage] = useState<{
     comfort?: string
     joke?: string
@@ -133,10 +135,10 @@ const JokeGenerator = () => {
   return (
     <div className="bg-white rounded-lg p-6 shadow-md">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-xl font-semibold text-pink-600">开心一刻</h2>
+        <h2 className={`text-xl font-semibold text-${theme.text}`}>开心一刻</h2>
         <motion.button
           onClick={() => setShowInput(!showInput)}
-          className="text-pink-500 hover:text-pink-600"
+          className={`text-${theme.primary}-500 hover:text-${theme.primary}-600`}
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
         >
@@ -159,15 +161,15 @@ const JokeGenerator = () => {
                 value={keyword}
                 onChange={(e) => setKeyword(e.target.value)}
                 placeholder="请输入关键词或者当前心情..."
-                className="flex-1 px-3 py-2 border border-pink-200 rounded-md
-                  focus:outline-none focus:ring-2 focus:ring-pink-500
-                  text-pink-600 placeholder-pink-300
-                  bg-white/90"
+                className={`flex-1 px-3 py-2 border border-${theme.primary}-200 rounded-md
+                  focus:outline-none focus:ring-2 focus:ring-${theme.primary}-500
+                  text-${theme.primary}-600 placeholder-${theme.primary}-300
+                  bg-white/90`}
               />
               <button
                 type="submit"
-                className="bg-pink-500 hover:bg-pink-600 text-white px-4 py-2
-                  rounded-md transition-colors disabled:bg-pink-300"
+                className={`bg-${theme.primary}-500 hover:bg-${theme.primary}-600 text-white px-4 py-2
+                  rounded-md transition-colors disabled:bg-${theme.primary}-300`}
                 disabled={!keyword.trim()}
               >
                 搜索
@@ -179,13 +181,13 @@ const JokeGenerator = () => {
 
       <div className="space-y-4 mb-4">
         {isComforting && currentMessage?.comfort && (
-          <div className="bg-pink-100 rounded-lg p-4 min-h-[80px] flex items-center justify-center">
-            <p className="text-pink-600 text-center font-medium">{currentMessage.comfort}</p>
+          <div className={`bg-${theme.primary}-100 rounded-lg p-4 min-h-[80px] flex items-center justify-center`}>
+            <p className={`text-${theme.primary}-600 text-center font-medium`}>{currentMessage.comfort}</p>
           </div>
         )}
 
         {!isLoading && (
-          <div className="bg-pink-50 rounded-lg p-4 min-h-[80px] flex items-center justify-center">
+          <div className={`bg-${theme.primary}-50 rounded-lg p-4 min-h-[80px] flex items-center justify-center`}>
             <p className="text-gray-700 text-center">
               {isComforting && '来听个笑话吧：'}{currentMessage.joke}
             </p>
@@ -196,13 +198,13 @@ const JokeGenerator = () => {
       <button
         onClick={() => fetchContent(keyword)}
         disabled={isLoading}
-        className="w-full bg-pink-500 hover:bg-pink-600 disabled:bg-pink-300
-                 text-white py-2 px-4 rounded-md transition-colors"
+        className={`w-full bg-${theme.primary}-500 hover:bg-${theme.primary}-600 disabled:bg-${theme.primary}-300
+                 text-white py-2 px-4 rounded-md transition-colors`}
         aria-label={isComforting ? "再来一句暖心话" : "讲个笑话"}
       >
         {isLoading ? (
           <span className="flex items-center justify-center">
-            <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <svg className={`animate-spin -ml-1 mr-3 h-5 w-5 text-white`} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
             </svg>

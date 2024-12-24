@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
+import { useTheme } from '../contexts/ThemeContext'
 
 type Card = {
   id: number
@@ -15,6 +16,7 @@ type Card = {
 const emojis = ['❤️', '🌹', '🎀', '🌸', '💝', '🎵', '🌟', '🦄']
 
 const MemoryGame = () => {
+  const { theme } = useTheme()
   const [cards, setCards] = useState<Card[]>([])
   const [flippedCards, setFlippedCards] = useState<number[]>([])
   const [matches, setMatches] = useState<number>(0)
@@ -84,13 +86,13 @@ const MemoryGame = () => {
   return (
     <div className="bg-white rounded-lg p-6 shadow-md">
       <div className="text-center mb-4">
-        <h2 className="text-xl font-semibold text-pink-600">甜蜜记忆配对</h2>
+        <h2 className={`text-xl font-semibold text-${theme.text}`}>甜蜜记忆配对</h2>
         <p className="text-gray-600 mt-2">
           步数: {moves} | 配对: {matches}/8
         </p>
         <button
           onClick={initializeGame}
-          className="mt-2 bg-pink-500 hover:bg-pink-600 text-white py-1 px-4 rounded-md transition-colors"
+          className={`mt-2 bg-${theme.primary}-500 hover:bg-${theme.primary}-600 text-white py-1 px-4 rounded-md transition-colors`}
           aria-label="重新开始游戏"
         >
           重新开始
@@ -103,7 +105,10 @@ const MemoryGame = () => {
             key={card.id}
             onClick={() => handleCardClick(card.id)}
             className={`aspect-square rounded-lg text-2xl flex items-center justify-center cursor-pointer
-              ${card.isFlipped || card.isMatched ? 'bg-pink-100' : 'bg-pink-500'}`}
+              ${card.isFlipped || card.isMatched
+                ? `bg-${theme.primary}-100`
+                : `bg-${theme.primary}-500`
+              }`}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             animate={{ rotateY: card.isFlipped || card.isMatched ? 180 : 0 }}
@@ -123,7 +128,7 @@ const MemoryGame = () => {
           animate={{ opacity: 1, y: 0 }}
           className="mt-4 space-y-4"
         >
-          <p className="text-center text-green-600 font-semibold">
+          <p className={`text-center text-${theme.primary}-600 font-semibold`}>
             🎉 恭喜完成！用了 {moves} 步
           </p>
 

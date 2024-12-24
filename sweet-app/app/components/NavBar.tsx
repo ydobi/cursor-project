@@ -2,15 +2,18 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { useTheme } from '../contexts/ThemeContext'
 
 const NavBar = () => {
   const pathname = usePathname()
+  const { theme } = useTheme()
 
   const navItems = [
     { path: '/', label: '首页', icon: '🏠' },
     { path: '/sweet-words', label: '甜言蜜语', icon: '💝' },
     { path: '/jokes', label: '开心一笑', icon: '😊' },
     { path: '/memory', label: '记忆游戏', icon: '🎮' },
+    { path: '/food', label: '吃什么', icon: '🍽️' },
   ]
 
   return (
@@ -22,7 +25,7 @@ const NavBar = () => {
               key={item.path}
               href={item.path}
               className={`flex flex-col items-center space-y-1 ${
-                pathname === item.path ? 'text-pink-600' : 'text-gray-500'
+                pathname === item.path ? `text-${theme.text}` : 'text-gray-500'
               }`}
             >
               <span className="text-xl">{item.icon}</span>

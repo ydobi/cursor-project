@@ -1,11 +1,15 @@
 "use client"
 
+import { useTheme } from '../contexts/ThemeContext'
+
 type DateCountdownProps = {
   date: string
   event: string
 }
 
 const DateCountdown = ({ date, event }: DateCountdownProps) => {
+  const { theme } = useTheme()
+
   const getDaysUntil = () => {
     const today = new Date()
     const targetDate = new Date(date)
@@ -23,7 +27,7 @@ const DateCountdown = ({ date, event }: DateCountdownProps) => {
   return (
     <div className="text-center">
       <p className="text-gray-700">距离{event}还有</p>
-      <p className="text-3xl font-bold text-pink-500">{getDaysUntil()}天</p>
+      <p className={`text-3xl font-bold text-${theme.primary}-500`}>{getDaysUntil()}天</p>
     </div>
   )
 }
