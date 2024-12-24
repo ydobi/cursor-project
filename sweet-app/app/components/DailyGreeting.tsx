@@ -10,6 +10,8 @@ interface WeatherData {
   location: string
 }
 
+const ApiKey = '1fb6e7ea6b14ed6d163dc5c1c149615a'
+
 const getWeatherEmoji = (description: string): string => {
   const weatherMap: { [key: string]: string } = {
     'clear': '☀️',
@@ -48,12 +50,12 @@ export default function DailyGreeting() {
 
       // 获取天气数据
       const { data: weatherData } = await axios.get(
-        `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}&units=metric`
+        `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${ApiKey}&units=metric`
       )
 
       // 获取地理位置名称
       const { data: geoData } = await axios.get(
-        `https://api.openweathermap.org/geo/1.0/reverse?lat=${latitude}&lon=${longitude}&limit=1&appid=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`
+        `https://api.openweathermap.org/geo/1.0/reverse?lat=${latitude}&lon=${longitude}&limit=1&appid=${ApiKey}`
       )
 
       setWeather({
