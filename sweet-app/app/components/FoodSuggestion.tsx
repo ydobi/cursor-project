@@ -64,10 +64,10 @@ export default function FoodSuggestion() {
     setLoading(true)
     try {
       const response = await moonshotAPI.chat(
-        `${prompt}，请按以下格式回复：
-        菜品1名称|菜系|特色描述
-        菜品2名称|菜系|特色描述
-        菜品3名称|菜系|特色描述
+        `${prompt}。请推荐2-3道菜品，按以下格式回复（不要带序号，直接用换行分隔每个菜品）：
+        菜品名称|菜系类型|特色描述
+        菜品名称|菜系类型|特色描述
+        菜品名称|菜系类型|特色描述
         推荐理由：xxx`,
         {
           temperature: 0.8,
@@ -76,7 +76,12 @@ export default function FoodSuggestion() {
       )
 
       if (response) {
-        const lines = response.split('\n').filter(line => line.trim())
+        const lines = response.split('\n').filter(line => {
+          const trimmedLine = line.trim()
+          // 过滤掉包含"菜品"和空行的内容
+          return trimmedLine && !trimmedLine.includes('菜品') && !trimmedLine.includes('**')
+        })
+
         const dishes: DishSuggestion[] = []
         let reason = ''
 
@@ -91,10 +96,14 @@ export default function FoodSuggestion() {
           }
         })
 
-        setSuggestion({
-          dishes,
-          reason
-        })
+        if (dishes.length > 0) {
+          setSuggestion({
+            dishes,
+            reason
+          })
+        } else {
+          setSuggestion(getFallbackSuggestion())
+        }
       } else {
         setSuggestion(getFallbackSuggestion())
       }
