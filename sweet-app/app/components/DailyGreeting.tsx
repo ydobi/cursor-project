@@ -101,6 +101,14 @@ const DailyGreeting = () => {
     getCurrentLocation()
   }, [])
 
+  const getTemperatureMessage = () => {
+    if (!weather) return "今天天气不错，祝你心情愉快！"
+    const temp = weather.temp
+    if (temp < 15) return "天气有点凉，要记得多穿点哦！"
+    if (temp > 30) return "天气有点热，要记得防晒降温哦！"
+    return "今天天气不错，祝你心情愉快！"
+  }
+
   return (
     <div className="bg-white rounded-lg p-6 shadow-md">
       <div className="flex items-center justify-between mb-4">
@@ -132,17 +140,15 @@ const DailyGreeting = () => {
               <div>
                 <p className={`text-${theme.primary}-700 font-medium`}>{weather.location}</p>
                 <p className="text-gray-600 text-sm">
-                  {weather.temp}°C | {weather.description}
+                  {weather?.temp}°C | {weather?.description}
                 </p>
               </div>
               <div className={`text-${theme.primary}-600 text-2xl`}>
-                {getWeatherEmoji(weather.description)}
+                {weather.icon}
               </div>
             </div>
           ) : error ? (
-            <p className={`text-${theme.primary}-600 text-center`}>
-              {error === 'LOCATION_ERROR' ? '无法获取位置信息' : '获取天气信息失败'}
-            </p>
+            <p className={`text-${theme.primary}-600 text-center`}>{error}</p>
           ) : null}
         </div>
 
@@ -152,9 +158,7 @@ const DailyGreeting = () => {
             {getGreeting()}，亲爱的！
           </p>
           <p className={`text-${theme.primary}-600 text-center text-sm mt-2`}>
-            {weather?.temp < 15 ? "天气有点凉，要记得多穿点哦！" :
-             weather?.temp > 30 ? "天气有点热，要记得防晒降温哦！" :
-             "今天天气不错，祝你心情愉快！"}
+            {getTemperatureMessage()}
           </p>
         </div>
 
